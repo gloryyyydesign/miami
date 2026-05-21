@@ -2396,8 +2396,9 @@ car.position.set(0, 0, 0);
 
 // Door pivots for the FBX container: set after model loads.
 // Procedural fallback uses legacy container.userData.doorPivot (single pivot).
-container.userData.doorPivots = null;
-container.userData.doorPivot  = null;
+container.userData.frontDoorPivots = null;
+container.userData.backDoorPivots  = null;
+container.userData.doorPivot       = null;
 
 // Assets are hosted in the GitHub repo and fetched at runtime.
 // This keeps the HTML small (~120 KB) and lets the browser cache
@@ -2528,26 +2529,42 @@ FBX_LOADER.load(ASSET_BASE + 'container.fbx', (fbx) => {
   container.add(fbx);
   container.userData.model = fbx;
 
-  // Add animated door panels at the -X face (where the car enters)
+  // Add animated door panels at both ends of the container
   const cb2 = new THREE.Box3().setFromObject(container);
   const cs2 = cb2.getSize(new THREE.Vector3());
   const cc2 = cb2.getCenter(new THREE.Vector3());
-  const dX = cb2.min.x, halfD = cs2.z / 2, dH = cs2.y, dY = cc2.y, dZ = cc2.z;
+  const dXfront = cb2.min.x, dXback = cb2.max.x;
+  const halfD = cs2.z / 2, dH = cs2.y, dY = cc2.y, dZ = cc2.z;
   const doorMat2 = new THREE.MeshStandardMaterial({
     color: 0x922015, metalness: 0.7, roughness: 0.4,
     emissive: 0x3a0d08, emissiveIntensity: 0.25, side: THREE.DoubleSide,
   });
+
+  // Front doors (min.x face — car enters here)
   const lPivot = new THREE.Group();
-  lPivot.position.set(dX, dY, dZ + halfD);
+  lPivot.position.set(dXfront, dY, dZ + halfD);
   const lPanel = new THREE.Mesh(new THREE.BoxGeometry(0.06, dH * 0.96, halfD * 0.98), doorMat2);
   lPanel.position.set(0, 0, -halfD / 2); lPanel.castShadow = true;
   lPivot.add(lPanel); container.add(lPivot);
   const rPivot = new THREE.Group();
-  rPivot.position.set(dX, dY, dZ - halfD);
+  rPivot.position.set(dXfront, dY, dZ - halfD);
   const rPanel = new THREE.Mesh(new THREE.BoxGeometry(0.06, dH * 0.96, halfD * 0.98), doorMat2);
   rPanel.position.set(0, 0, halfD / 2); rPanel.castShadow = true;
   rPivot.add(rPanel); container.add(rPivot);
-  container.userData.doorPivots = [lPivot, rPivot];
+  container.userData.frontDoorPivots = [lPivot, rPivot];
+
+  // Back doors (max.x face — car exits here); open outward toward +X
+  const lBack = new THREE.Group();
+  lBack.position.set(dXback, dY, dZ + halfD);
+  const lBackPanel = new THREE.Mesh(new THREE.BoxGeometry(0.06, dH * 0.96, halfD * 0.98), doorMat2);
+  lBackPanel.position.set(0, 0, -halfD / 2); lBackPanel.castShadow = true;
+  lBack.add(lBackPanel); container.add(lBack);
+  const rBack = new THREE.Group();
+  rBack.position.set(dXback, dY, dZ - halfD);
+  const rBackPanel = new THREE.Mesh(new THREE.BoxGeometry(0.06, dH * 0.96, halfD * 0.98), doorMat2);
+  rBackPanel.position.set(0, 0, halfD / 2); rBackPanel.castShadow = true;
+  rBack.add(rBackPanel); container.add(rBack);
+  container.userData.backDoorPivots = [lBack, rBack];
 
   containerLoaded = true;
   _onModelReady();
@@ -2715,14 +2732,14 @@ function updateScene(time, deltaSec) {
   } else if (p < 0.85) {
     const k = range(p, 0.70, 0.85);
     camX = lerp(-2, 0, k);
-    camY = lerp(5.5, 4.5, k);
-    camZ = lerp(23, 18, k);
+    camY = lerp(5.5, 4.0, k);
+    camZ = lerp(23, 16, k);
   } else {
-    const k = range(p, 0.85, 1.0);
+    // Hold at medium distance as car spins in center
     camX = 0;
-    camY = lerp(4.5, 3.2, k);
-    camZ = lerp(18, 11, k);
-    lookY = lerp(1.3, 1.0, k);
+    camY = 4.0;
+    camZ = 16;
+    lookY = 1.0;
   }
 
   camera.position.set(camX, camY, camZ);
@@ -2750,16 +2767,23 @@ function updateScene(time, deltaSec) {
     if (k > 0.78) carVisible = false;
   } else if (p < 0.85) {
     carVisible = false;
-  } else {
-    const k = range(p, 0.85, 1.0);
-    carX = lerp(-5, 0, k);
+  } else if (p < 0.93) {
+    // Car exits back of container and drives to center
+    const k = range(p, 0.85, 0.93);
+    carX = lerp(1.5, 0, k);
     carY = 0;
-    carZ = lerp(0, 6, k);
-    carRotY = lerp(-0.3, 0.2, k);
-    carScale = lerp(0.7, 1.2, k);
+    carZ = lerp(2, 0, k);
+    carRotY = lerp(0, 0, k);
+    carScale = lerp(0.85, 1.0, k);
     car.position.set(carX, carY, carZ);
     car.rotation.y = carRotY;
     car.scale.setScalar(carScale);
+  } else {
+    // Car centered at medium distance, slowly spinning in place
+    car.position.set(0, 0, 0);
+    car.rotation.y = t * 0.00035;
+    car.scale.setScalar(1.0);
+    carX = 0;
   }
   car.visible = carVisible;
 
@@ -2776,73 +2800,93 @@ function updateScene(time, deltaSec) {
   // ============================================================
   // CONTAINER
   // ============================================================
-  // doorPivots handled below after position/rotation applied
   let contVisible = false;
   let cX = 0, cY = 0, cZ = 0, cRotY = 0, cScale = 1;
-  let doorAngle = -Math.PI / 2; // open by default
+  // Front doors open inward (-X face). Angle: 0=closed, -π/2=open.
+  let frontDoorAngle = 0;
+  // Back doors open outward (+X face). Angle: 0=closed, Math.PI/2=open.
+  let backDoorAngle = 0;
 
   if (p < 0.14) {
     contVisible = false;
   } else if (p < 0.20) {
+    // Container slides in from right; front doors open as it arrives
     const k = range(p, 0.14, 0.20);
     contVisible = true;
     cX = lerp(22, 8, k);
     cRotY = lerp(-0.3, 0, k);
-    doorAngle = -Math.PI / 2;
+    frontDoorAngle = lerp(0, -Math.PI / 2, k); // doors open as container arrives
   } else if (p < 0.28) {
+    // Car drives in through front doors (doors open)
     contVisible = true;
     cX = 8;
-    doorAngle = -Math.PI / 2;
+    frontDoorAngle = -Math.PI / 2;
   } else if (p < 0.31) {
-    // Door closes (only visible on procedural fallback). On FBX it's
-    // just a brief beat before container starts moving.
+    // Front doors close after car is loaded
     const k = range(p, 0.28, 0.31);
     contVisible = true;
     cX = 8;
-    doorAngle = lerp(-Math.PI / 2, 0, k);
+    frontDoorAngle = lerp(-Math.PI / 2, 0, k);
   } else if (p < 0.42) {
+    // Container moves to ship
     const k = range(p, 0.31, 0.42);
     contVisible = true;
     cX = lerp(8, 18, k);
     cZ = lerp(0, -5, k);
     cScale = lerp(1, 0.5, k);
-    doorAngle = 0;
+    frontDoorAngle = 0;
   } else if (p < 0.70) {
     contVisible = false;
   } else if (p < 0.78) {
-    // Container offloaded from ship cargo deck (not the bridge).
-    // Ship is at sX≈-3; cargo columns sit at local X ≈ -1..+2,
-    // so world X start ≈ -3 + (-1) = -4. Y starts at stack top (~3.5u).
+    // Container offloaded from ship cargo deck onto shore
     const k = range(p, 0.70, 0.78);
     contVisible = true;
-    cX = lerp(-4, -2, k);                      // cargo deck → shore
-    cY = lerp(3.5, 0, k);                       // descends from stack height
-    cZ = lerp(-1, 2, k);                        // moves toward camera
+    cX = lerp(-4, -2, k);
+    cY = lerp(3.5, 0, k);
+    cZ = lerp(-1, 2, k);
     cRotY = lerp(0.10, 0, k);
     cScale = lerp(0.7, 1, k);
-    doorAngle = 0;
-  } else if (p < 0.88) {
-    const k = range(p, 0.78, 0.88);
+    frontDoorAngle = 0;
+    backDoorAngle = 0;
+  } else if (p < 0.85) {
+    // Back doors open so car can exit
+    const k = range(p, 0.78, 0.85);
     contVisible = true;
     cX = -2;
-    doorAngle = lerp(0, -Math.PI / 2, k);
+    frontDoorAngle = 0;
+    backDoorAngle = lerp(0, Math.PI / 2, k);
+  } else if (p < 0.93) {
+    // Car exits through back; back doors stay open
+    contVisible = true;
+    cX = -2;
+    frontDoorAngle = 0;
+    backDoorAngle = Math.PI / 2;
   } else {
-    const k = range(p, 0.88, 1.0);
+    // Back doors close, container slides away
+    const k = range(p, 0.93, 1.0);
     contVisible = true;
     cX = lerp(-2, -16, k);
-    doorAngle = -Math.PI / 2;
+    backDoorAngle = lerp(Math.PI / 2, 0, k);
   }
 
   container.visible = contVisible;
   container.position.set(cX, cY, cZ);
   container.rotation.y = cRotY;
   container.scale.setScalar(cScale);
-  if (container.userData.doorPivots) {
-    const [lp, rp] = container.userData.doorPivots;
-    lp.rotation.y = -doorAngle;
-    rp.rotation.y =  doorAngle;
-  } else if (container.userData.doorPivot) {
-    container.userData.doorPivot.rotation.y = doorAngle;
+
+  if (container.userData.frontDoorPivots) {
+    const [lf, rf] = container.userData.frontDoorPivots;
+    lf.rotation.y = -frontDoorAngle;
+    rf.rotation.y =  frontDoorAngle;
+  }
+  if (container.userData.backDoorPivots) {
+    const [lb, rb] = container.userData.backDoorPivots;
+    lb.rotation.y =  backDoorAngle;
+    rb.rotation.y = -backDoorAngle;
+  }
+  if (container.userData.doorPivot) {
+    // Procedural fallback: use front door angle
+    container.userData.doorPivot.rotation.y = frontDoorAngle;
   }
 
   // ============================================================
