@@ -49,6 +49,20 @@
     background-size: 100% 100%;
   }
   .city-bg svg { width: 100%; height: 100%; display: block; }
+  #miamiBg {
+    background-image: url('https://raw.githubusercontent.com/gloryyyydesign/miami/main/assets/miami.jpg');
+    background-size: cover;
+    background-position: bottom center;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 40%, black 65%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 40%, black 65%);
+  }
+  #rotterdamBg {
+    background-image: url('https://raw.githubusercontent.com/gloryyyydesign/miami/main/assets/rotterdam.jpg');
+    background-size: cover;
+    background-position: bottom center;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 40%, black 65%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 40%, black 65%);
+  }
 
   /* ============== CINEMATIC INTRO ============== */
   .intro {
@@ -438,168 +452,10 @@
     <div class="intro-sun" id="introSun"></div>
 
     <!-- Miami night skyline (visible at animation start) -->
-    <div class="city-bg" id="miamiBg">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="mSky" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#0a0418"/>
-            <stop offset="60%" stop-color="#1a0838"/>
-            <stop offset="100%" stop-color="#2d0a5e"/>
-          </linearGradient>
-          <radialGradient id="mGlow" cx="0.5" cy="1" r="0.6">
-            <stop offset="0%" stop-color="#E71875" stop-opacity="0.5"/>
-            <stop offset="100%" stop-color="#E71875" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-        <rect width="1440" height="900" fill="url(#mSky)"/>
-        <rect width="1440" height="300" y="600" fill="url(#mGlow)"/>
-        <!-- Stars -->
-        <circle cx="120" cy="60" r="1.5" fill="white" opacity="0.8"/>
-        <circle cx="260" cy="40" r="1" fill="white" opacity="0.6"/>
-        <circle cx="400" cy="80" r="1.5" fill="white" opacity="0.7"/>
-        <circle cx="580" cy="30" r="1" fill="white" opacity="0.8"/>
-        <circle cx="720" cy="55" r="1.5" fill="white" opacity="0.6"/>
-        <circle cx="900" cy="25" r="1" fill="white" opacity="0.7"/>
-        <circle cx="1100" cy="70" r="1.5" fill="white" opacity="0.8"/>
-        <circle cx="1300" cy="45" r="1" fill="white" opacity="0.6"/>
-        <!-- Moon -->
-        <circle cx="1280" cy="90" r="30" fill="#F48A56" opacity="0.5"/>
-        <circle cx="1280" cy="90" r="24" fill="#F48A56" opacity="0.7"/>
-        <!-- Horizon glow -->
-        <ellipse cx="720" cy="780" rx="600" ry="160" fill="#E71875" opacity="0.18"/>
-        <ellipse cx="720" cy="820" rx="400" ry="80" fill="#F671A6" opacity="0.12"/>
-        <!-- Water reflection -->
-        <rect x="0" y="740" width="1440" height="160" fill="#0a0418" opacity="0.7"/>
-        <rect x="0" y="740" width="1440" height="2" fill="#F671A6" opacity="0.3"/>
-        <!-- Buildings — back row (dark silhouettes) -->
-        <rect x="0"   y="520" width="80"  height="220" fill="#0d0520"/>
-        <rect x="60"  y="460" width="50"  height="280" fill="#0d0520"/>
-        <rect x="100" y="490" width="70"  height="250" fill="#0d0520"/>
-        <rect x="160" y="430" width="90"  height="310" fill="#0d0520"/>
-        <rect x="240" y="510" width="55"  height="230" fill="#0d0520"/>
-        <rect x="290" y="470" width="65"  height="270" fill="#0d0520"/>
-        <rect x="350" y="440" width="80"  height="300" fill="#0d0520"/>
-        <rect x="420" y="500" width="60"  height="240" fill="#0d0520"/>
-        <rect x="470" y="450" width="100" height="290" fill="#0d0520"/>
-        <rect x="560" y="420" width="70"  height="320" fill="#0d0520"/>
-        <rect x="620" y="480" width="55"  height="260" fill="#0d0520"/>
-        <rect x="670" y="390" width="90"  height="350" fill="#0d0520"/><!-- tallest -->
-        <rect x="750" y="460" width="65"  height="280" fill="#0d0520"/>
-        <rect x="810" y="430" width="80"  height="310" fill="#0d0520"/>
-        <rect x="880" y="500" width="55"  height="240" fill="#0d0520"/>
-        <rect x="930" y="470" width="70"  height="270" fill="#0d0520"/>
-        <rect x="990" y="440" width="85"  height="300" fill="#0d0520"/>
-        <rect x="1070" y="510" width="55" height="230" fill="#0d0520"/>
-        <rect x="1120" y="450" width="75" height="290" fill="#0d0520"/>
-        <rect x="1190" y="420" width="90" height="320" fill="#0d0520"/>
-        <rect x="1270" y="480" width="60" height="260" fill="#0d0520"/>
-        <rect x="1330" y="460" width="80" height="280" fill="#0d0520"/>
-        <rect x="1400" y="500" width="40" height="240" fill="#0d0520"/>
-        <!-- Neon window lights on buildings -->
-        <rect x="175" y="445" width="5" height="4" fill="#F671A6" opacity="0.9"/>
-        <rect x="185" y="455" width="5" height="4" fill="#F48A56" opacity="0.8"/>
-        <rect x="175" y="465" width="5" height="4" fill="#F671A6" opacity="0.7"/>
-        <rect x="360" y="455" width="6" height="4" fill="#F671A6" opacity="0.9"/>
-        <rect x="370" y="465" width="6" height="4" fill="#E71875" opacity="0.8"/>
-        <rect x="360" y="475" width="6" height="4" fill="#F48A56" opacity="0.7"/>
-        <rect x="480" y="465" width="7" height="5" fill="#F671A6" opacity="0.9"/>
-        <rect x="490" y="478" width="7" height="5" fill="#F48A56" opacity="0.8"/>
-        <rect x="680" y="405" width="7" height="5" fill="#F671A6" opacity="0.9"/>
-        <rect x="693" y="418" width="7" height="5" fill="#E71875" opacity="0.8"/>
-        <rect x="680" y="430" width="7" height="5" fill="#F48A56" opacity="0.7"/>
-        <rect x="820" y="445" width="6" height="4" fill="#F671A6" opacity="0.9"/>
-        <rect x="832" y="458" width="6" height="4" fill="#F48A56" opacity="0.8"/>
-        <rect x="1000" y="455" width="7" height="5" fill="#F671A6" opacity="0.9"/>
-        <rect x="1012" y="468" width="7" height="5" fill="#E71875" opacity="0.8"/>
-        <rect x="1200" y="435" width="7" height="5" fill="#F671A6" opacity="0.9"/>
-        <rect x="1213" y="448" width="7" height="5" fill="#F48A56" opacity="0.8"/>
-        <!-- Horizon fade (scene bleeds into the 3D ground) -->
-        <rect x="0" y="700" width="1440" height="200" fill="url(#mSky)" opacity="0.7"/>
-      </svg>
-    </div>
+    <div class="city-bg" id="miamiBg"></div>
 
     <!-- Rotterdam night skyline (visible during final delivery phase) -->
-    <div class="city-bg" id="rotterdamBg">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="rSky" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#050d1a"/>
-            <stop offset="55%" stop-color="#0a1a2e"/>
-            <stop offset="100%" stop-color="#0d2040"/>
-          </linearGradient>
-          <radialGradient id="rGlow" cx="0.5" cy="1" r="0.5">
-            <stop offset="0%" stop-color="#1a6aaa" stop-opacity="0.4"/>
-            <stop offset="100%" stop-color="#1a6aaa" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-        <rect width="1440" height="900" fill="url(#rSky)"/>
-        <rect width="1440" height="280" y="620" fill="url(#rGlow)"/>
-        <!-- Stars -->
-        <circle cx="80"  cy="50"  r="1.5" fill="white" opacity="0.7"/>
-        <circle cx="220" cy="35"  r="1"   fill="white" opacity="0.6"/>
-        <circle cx="450" cy="65"  r="1.5" fill="white" opacity="0.8"/>
-        <circle cx="650" cy="25"  r="1"   fill="white" opacity="0.7"/>
-        <circle cx="860" cy="55"  r="1.5" fill="white" opacity="0.6"/>
-        <circle cx="1050" cy="30" r="1"   fill="white" opacity="0.7"/>
-        <circle cx="1250" cy="60" r="1.5" fill="white" opacity="0.8"/>
-        <!-- Moon -->
-        <circle cx="200" cy="100" r="28" fill="#b8d4f0" opacity="0.4"/>
-        <circle cx="200" cy="100" r="22" fill="#cce0f8" opacity="0.6"/>
-        <!-- Water — harbour -->
-        <rect x="0" y="720" width="1440" height="180" fill="#071525" opacity="0.9"/>
-        <rect x="0" y="720" width="1440" height="2"   fill="#4a9ede" opacity="0.4"/>
-        <!-- Erasmus Bridge — iconic feature -->
-        <line x1="580" y1="720" x2="580" y2="520" stroke="#cce0f8" stroke-width="4"/><!-- pylon -->
-        <line x1="580" y1="520" x2="480" y2="720" stroke="#cce0f8" stroke-width="1.5"/>
-        <line x1="580" y1="520" x2="510" y2="720" stroke="#cce0f8" stroke-width="1.5"/>
-        <line x1="580" y1="520" x2="540" y2="720" stroke="#cce0f8" stroke-width="1.5"/>
-        <line x1="580" y1="520" x2="620" y2="720" stroke="#cce0f8" stroke-width="1.5"/>
-        <line x1="580" y1="520" x2="660" y2="720" stroke="#cce0f8" stroke-width="1.5"/>
-        <line x1="580" y1="520" x2="700" y2="720" stroke="#cce0f8" stroke-width="1.5"/>
-        <rect x="460" y="718" width="260" height="6" fill="#4a9ede" opacity="0.8"/><!-- deck -->
-        <!-- Port cranes (silhouettes) -->
-        <rect x="900" y="600" width="8"  height="120" fill="#0d2040"/>
-        <rect x="900" y="600" width="60" height="6"   fill="#0d2040"/>
-        <rect x="950" y="610" width="6"  height="110" fill="#0d2040"/>
-        <rect x="1050" y="580" width="8"  height="140" fill="#0d2040"/>
-        <rect x="1050" y="580" width="65" height="6"   fill="#0d2040"/>
-        <rect x="1100" y="590" width="6"  height="130" fill="#0d2040"/>
-        <rect x="200" y="610" width="8"  height="110" fill="#0d2040"/>
-        <rect x="200" y="610" width="55" height="6"   fill="#0d2040"/>
-        <rect x="248" y="620" width="6"  height="100" fill="#0d2040"/>
-        <!-- Buildings — city skyline -->
-        <rect x="0"    y="600" width="55"  height="120" fill="#071830"/>
-        <rect x="50"   y="550" width="45"  height="170" fill="#071830"/>
-        <rect x="90"   y="520" width="60"  height="200" fill="#071830"/>
-        <rect x="145"  y="570" width="40"  height="150" fill="#071830"/>
-        <rect x="300"  y="530" width="70"  height="190" fill="#071830"/>
-        <rect x="365"  y="490" width="55"  height="230" fill="#071830"/>
-        <rect x="415"  y="540" width="50"  height="180" fill="#071830"/>
-        <rect x="700"  y="510" width="60"  height="210" fill="#071830"/>
-        <rect x="755"  y="470" width="80"  height="250" fill="#071830"/><!-- tall -->
-        <rect x="830"  y="530" width="55"  height="190" fill="#071830"/>
-        <rect x="880"  y="560" width="40"  height="160" fill="#071830"/>
-        <rect x="1140" y="540" width="60"  height="180" fill="#071830"/>
-        <rect x="1195" y="490" width="75"  height="230" fill="#071830"/>
-        <rect x="1265" y="530" width="55"  height="190" fill="#071830"/>
-        <rect x="1315" y="560" width="50"  height="160" fill="#071830"/>
-        <rect x="1360" y="520" width="80"  height="200" fill="#071830"/>
-        <!-- Blue-tinted window lights -->
-        <rect x="100" y="530" width="5" height="4" fill="#4a9ede" opacity="0.8"/>
-        <rect x="110" y="545" width="5" height="4" fill="#7ec8f0" opacity="0.7"/>
-        <rect x="310" y="545" width="6" height="4" fill="#4a9ede" opacity="0.8"/>
-        <rect x="375" y="505" width="6" height="4" fill="#7ec8f0" opacity="0.7"/>
-        <rect x="765" y="485" width="7" height="5" fill="#4a9ede" opacity="0.8"/>
-        <rect x="778" y="500" width="7" height="5" fill="#7ec8f0" opacity="0.7"/>
-        <rect x="1200" y="502" width="6" height="4" fill="#4a9ede" opacity="0.8"/>
-        <rect x="1213" y="516" width="6" height="4" fill="#7ec8f0" opacity="0.7"/>
-        <!-- Water reflections of lights -->
-        <rect x="570" y="722" width="20" height="60" fill="#cce0f8" opacity="0.1"/>
-        <rect x="760" y="722" width="8"  height="80" fill="#4a9ede" opacity="0.1"/>
-        <!-- Horizon fade -->
-        <rect x="0" y="680" width="1440" height="200" fill="url(#rSky)" opacity="0.6"/>
-      </svg>
-    </div>
+    <div class="city-bg" id="rotterdamBg"></div>
 
     <canvas id="threeCanvas"></canvas>
 
@@ -677,287 +533,118 @@
     <div class="process">
       <div class="process-container">
         <div class="process-sticky">
-          <!-- Stage 1: SUCHE — Lucide "search" icon -->
           <div class="stage-visual active" data-stage="0">
-            <!-- FAHRZEUGSUCHE — search with car silhouette inside lens -->
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
               <defs>
-                <linearGradient id="ic0grad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#F48A56"/>
-                  <stop offset="100%" stop-color="#E71875"/>
-                </linearGradient>
-                <radialGradient id="ic0glow" cx="0.5" cy="0.5" r="0.5">
-                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.4"/>
+                <radialGradient id="ig0" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.35"/>
                   <stop offset="100%" stop-color="#F671A6" stop-opacity="0"/>
                 </radialGradient>
               </defs>
-              <!-- Glow halo -->
-              <circle cx="80" cy="80" r="65" fill="url(#ic0glow)"/>
-              <!-- Outer ring -->
-              <circle cx="80" cy="80" r="48" stroke="url(#ic0grad)" stroke-width="3.5" fill="none"/>
-              <!-- Inner ring (lens) -->
-              <circle cx="80" cy="80" r="38" stroke="#F671A6" stroke-width="1.5" fill="rgba(231, 24, 117, 0.08)"/>
-              <!-- Crosshair -->
-              <line x1="80" y1="40" x2="80" y2="50" stroke="#F671A6" stroke-width="2" stroke-linecap="round"/>
-              <line x1="80" y1="110" x2="80" y2="120" stroke="#F671A6" stroke-width="2" stroke-linecap="round"/>
-              <line x1="40" y1="80" x2="50" y2="80" stroke="#F671A6" stroke-width="2" stroke-linecap="round"/>
-              <line x1="110" y1="80" x2="120" y2="80" stroke="#F671A6" stroke-width="2" stroke-linecap="round"/>
-              <!-- Car silhouette inside lens -->
-              <path d="M58 84 L62 76 Q66 70 74 70 L86 70 Q94 70 98 76 L102 84 L102 90 L98 90 Q96 94 92 94 Q88 94 86 90 L74 90 Q72 94 68 94 Q64 94 62 90 L58 90 Z" fill="#F48A56" opacity="0.9"/>
-              <circle cx="68" cy="91" r="3.5" fill="#0a0418"/>
-              <circle cx="92" cy="91" r="3.5" fill="#0a0418"/>
-              <path d="M68 76 L72 73 L88 73 L92 76 L88 80 L72 80 Z" fill="#0a0418" opacity="0.6"/>
-              <!-- Handle -->
-              <line x1="118" y1="118" x2="158" y2="158" stroke="url(#ic0grad)" stroke-width="9" stroke-linecap="round"/>
-              <line x1="118" y1="118" x2="158" y2="158" stroke="#F671A6" stroke-width="3" stroke-linecap="round"/>
-              <!-- Sparkle dots -->
-              <circle cx="148" cy="48" r="2.5" fill="#F48A56"/>
-              <circle cx="160" cy="60" r="1.5" fill="#F671A6"/>
-              <circle cx="40" cy="135" r="2" fill="#F671A6"/>
+              <circle cx="100" cy="100" r="80" fill="url(#ig0)"/>
+              <g transform="translate(52,52) scale(4)" fill="none" stroke="#F48A56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" stroke="#F671A6"/>
+                <path d="m21 21-4.35-4.35" stroke="#F48A56"/>
+              </g>
             </svg>
             <div class="stage-label">★ FAHRZEUGSUCHE ★</div>
           </div>
-          <!-- Stage 2: KAUF — auction gavel with paper -->
           <div class="stage-visual" data-stage="1">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
               <defs>
-                <linearGradient id="ic1grad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#F48A56"/>
-                  <stop offset="100%" stop-color="#E71875"/>
-                </linearGradient>
-                <radialGradient id="ic1glow" cx="0.5" cy="0.5" r="0.5">
-                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.4"/>
-                  <stop offset="100%" stop-color="#F671A6" stop-opacity="0"/>
+                <radialGradient id="ig1" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#E71875" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#E71875" stop-opacity="0"/>
                 </radialGradient>
               </defs>
-              <circle cx="100" cy="100" r="65" fill="url(#ic1glow)"/>
-              <!-- Base/anvil block -->
-              <rect x="55" y="135" width="90" height="14" rx="3" fill="url(#ic1grad)"/>
-              <rect x="55" y="135" width="90" height="14" rx="3" stroke="#F671A6" stroke-width="1.5" fill="none"/>
-              <!-- Gavel handle (diagonal) -->
-              <rect x="92" y="38" width="14" height="80" rx="3" fill="#F48A56" stroke="#F671A6" stroke-width="2" transform="rotate(35 100 78)"/>
-              <!-- Gavel head -->
-              <rect x="118" y="40" width="46" height="26" rx="5" fill="url(#ic1grad)" stroke="#F671A6" stroke-width="2" transform="rotate(35 141 53)"/>
-              <line x1="128" y1="42" x2="158" y2="42" stroke="#F671A6" stroke-width="1.5" opacity="0.5" transform="rotate(35 141 53)"/>
-              <line x1="128" y1="64" x2="158" y2="64" stroke="#F671A6" stroke-width="1.5" opacity="0.5" transform="rotate(35 141 53)"/>
-              <!-- Motion lines (impact) -->
-              <line x1="48" y1="120" x2="40" y2="115" stroke="#F671A6" stroke-width="2.5" stroke-linecap="round"/>
-              <line x1="52" y1="130" x2="42" y2="130" stroke="#F671A6" stroke-width="2.5" stroke-linecap="round"/>
-              <line x1="50" y1="140" x2="40" y2="145" stroke="#F671A6" stroke-width="2.5" stroke-linecap="round"/>
-              <!-- Stars -->
-              <path d="M30 50 L33 56 L39 57 L34 61 L36 67 L30 64 L24 67 L26 61 L21 57 L27 56 Z" fill="#F48A56"/>
-              <circle cx="170" cy="155" r="2" fill="#F671A6"/>
+              <circle cx="100" cy="100" r="80" fill="url(#ig1)"/>
+              <g transform="translate(52,52) scale(4)" fill="none" stroke="#F671A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <path d="m9 15 2 2 4-4"/>
+              </g>
             </svg>
             <div class="stage-label">★ KAUF &amp; ABWICKLUNG ★</div>
           </div>
-          <!-- Stage 3: TRANSPORT USA — semi truck with trailer -->
           <div class="stage-visual" data-stage="2">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
               <defs>
-                <linearGradient id="ic2grad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#F671A6"/>
-                  <stop offset="100%" stop-color="#E71875"/>
-                </linearGradient>
-                <linearGradient id="ic2cab" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#F48A56"/>
-                  <stop offset="100%" stop-color="#E9382A"/>
-                </linearGradient>
-                <radialGradient id="ic2glow" cx="0.5" cy="0.5" r="0.5">
-                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.4"/>
+                <radialGradient id="ig2" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.35"/>
                   <stop offset="100%" stop-color="#F671A6" stop-opacity="0"/>
                 </radialGradient>
               </defs>
-              <circle cx="100" cy="100" r="65" fill="url(#ic2glow)"/>
-              <!-- Trailer -->
-              <rect x="32" y="78" width="78" height="55" rx="3" fill="url(#ic2grad)" stroke="#F671A6" stroke-width="2.5"/>
-              <line x1="40" y1="92" x2="100" y2="92" stroke="#F671A6" stroke-width="1.2" opacity="0.5"/>
-              <line x1="40" y1="105" x2="100" y2="105" stroke="#F671A6" stroke-width="1.2" opacity="0.5"/>
-              <line x1="40" y1="118" x2="100" y2="118" stroke="#F671A6" stroke-width="1.2" opacity="0.5"/>
-              <!-- Cab -->
-              <path d="M115 95 L115 78 Q115 73 120 73 L155 73 Q160 73 160 78 L168 95 L168 133 L115 133 Z" fill="url(#ic2cab)" stroke="#F671A6" stroke-width="2.5"/>
-              <!-- Cab window -->
-              <path d="M122 78 L155 78 L160 92 L122 92 Z" fill="#0a0418" stroke="#F671A6" stroke-width="1.5"/>
-              <path d="M124 79 L150 79 L153 88 L124 88 Z" fill="#F671A6" opacity="0.3"/>
-              <!-- Headlight -->
-              <circle cx="164" cy="115" r="3.5" fill="#F48A56"/>
-              <!-- Wheels -->
-              <circle cx="50" cy="138" r="11" fill="#0a0418" stroke="#F671A6" stroke-width="2"/>
-              <circle cx="50" cy="138" r="5" fill="#F48A56"/>
-              <circle cx="90" cy="138" r="11" fill="#0a0418" stroke="#F671A6" stroke-width="2"/>
-              <circle cx="90" cy="138" r="5" fill="#F48A56"/>
-              <circle cx="150" cy="138" r="11" fill="#0a0418" stroke="#F671A6" stroke-width="2"/>
-              <circle cx="150" cy="138" r="5" fill="#F48A56"/>
-              <!-- Speed lines -->
-              <line x1="18" y1="100" x2="28" y2="100" stroke="#F48A56" stroke-width="2.5" stroke-linecap="round"/>
-              <line x1="12" y1="113" x2="26" y2="113" stroke="#F671A6" stroke-width="2.5" stroke-linecap="round"/>
-              <line x1="20" y1="126" x2="30" y2="126" stroke="#F48A56" stroke-width="2.5" stroke-linecap="round"/>
-              <!-- Road -->
-              <line x1="20" y1="158" x2="180" y2="158" stroke="#F671A6" stroke-width="2" stroke-dasharray="8 6" opacity="0.6"/>
+              <circle cx="100" cy="100" r="80" fill="url(#ig2)"/>
+              <g transform="translate(52,52) scale(4)" fill="none" stroke="#F48A56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1" y="3" width="15" height="13" stroke="#F48A56"/>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" stroke="#F671A6"/>
+                <circle cx="5.5" cy="18.5" r="2.5" stroke="#F48A56"/>
+                <circle cx="18.5" cy="18.5" r="2.5" stroke="#F671A6"/>
+              </g>
             </svg>
             <div class="stage-label">★ TRANSPORT USA ★</div>
           </div>
-          <!-- Stage 4: SEETRANSPORT — container ship with waves -->
           <div class="stage-visual" data-stage="3">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
               <defs>
-                <linearGradient id="ic3hull" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#E71875"/>
-                  <stop offset="100%" stop-color="#4a0e7a"/>
-                </linearGradient>
-                <radialGradient id="ic3glow" cx="0.5" cy="0.5" r="0.5">
-                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.4"/>
+                <radialGradient id="ig3" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.35"/>
                   <stop offset="100%" stop-color="#F671A6" stop-opacity="0"/>
                 </radialGradient>
               </defs>
-              <circle cx="100" cy="100" r="65" fill="url(#ic3glow)"/>
-              <!-- Moon -->
-              <circle cx="155" cy="50" r="12" fill="#F48A56" opacity="0.4"/>
-              <circle cx="155" cy="50" r="9" fill="#F48A56"/>
-              <!-- Stars -->
-              <circle cx="35" cy="40" r="1.5" fill="#fff5ee"/>
-              <circle cx="60" cy="30" r="1" fill="#fff5ee"/>
-              <circle cx="120" cy="35" r="1" fill="#fff5ee"/>
-              <circle cx="175" cy="80" r="1.5" fill="#fff5ee"/>
-              <!-- Hull -->
-              <path d="M30 110 L170 110 L160 138 L40 138 Z" fill="url(#ic3hull)" stroke="#F671A6" stroke-width="2.5"/>
-              <!-- Deck stripe -->
-              <rect x="32" y="106" width="138" height="6" fill="#F671A6"/>
-              <!-- Containers row 1 -->
-              <rect x="38" y="86" width="22" height="20" fill="#E9382A" stroke="#F671A6" stroke-width="1.5"/>
-              <rect x="62" y="86" width="22" height="20" fill="#F48A56" stroke="#F671A6" stroke-width="1.5"/>
-              <rect x="86" y="86" width="22" height="20" fill="#F671A6" stroke="#fff5ee" stroke-width="1.5"/>
-              <rect x="110" y="86" width="22" height="20" fill="#E9382A" stroke="#F671A6" stroke-width="1.5"/>
-              <!-- Containers row 2 -->
-              <rect x="50" y="66" width="22" height="20" fill="#F48A56" stroke="#F671A6" stroke-width="1.5"/>
-              <rect x="74" y="66" width="22" height="20" fill="#E71875" stroke="#fff5ee" stroke-width="1.5"/>
-              <rect x="98" y="66" width="22" height="20" fill="#F48A56" stroke="#F671A6" stroke-width="1.5"/>
-              <!-- Bridge tower -->
-              <rect x="135" y="70" width="20" height="36" fill="#fff5ee" stroke="#F671A6" stroke-width="1.5"/>
-              <rect x="138" y="74" width="14" height="3" fill="#2d0a5e"/>
-              <rect x="138" y="80" width="14" height="3" fill="#2d0a5e"/>
-              <rect x="138" y="86" width="14" height="3" fill="#2d0a5e"/>
-              <!-- Mast -->
-              <line x1="145" y1="70" x2="145" y2="56" stroke="#F671A6" stroke-width="2"/>
-              <circle cx="145" cy="54" r="2" fill="#F48A56"/>
-              <!-- Waves -->
-              <path d="M18 148 Q40 143 60 148 T100 148 T140 148 T182 148" stroke="#F671A6" stroke-width="2" fill="none"/>
-              <path d="M18 158 Q40 153 60 158 T100 158 T140 158 T182 158" stroke="#E71875" stroke-width="2" fill="none"/>
-              <path d="M18 168 Q40 163 60 168 T100 168 T140 168 T182 168" stroke="#F48A56" stroke-width="2" fill="none"/>
+              <circle cx="100" cy="100" r="80" fill="url(#ig3)"/>
+              <g transform="translate(52,52) scale(4)" fill="none" stroke="#E71875" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="5" r="3" stroke="#F671A6"/>
+                <line x1="12" y1="22" x2="12" y2="8" stroke="#E71875"/>
+                <path d="M5 12H2a10 10 0 0 0 20 0h-3" stroke="#F48A56"/>
+              </g>
             </svg>
             <div class="stage-label">★ SEETRANSPORT ★</div>
           </div>
-          <!-- Stage 5: AUFBEREITUNG — wrench with car and EU star -->
           <div class="stage-visual" data-stage="4">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
               <defs>
-                <linearGradient id="ic4bgrad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#F48A56"/>
-                  <stop offset="100%" stop-color="#E71875"/>
-                </linearGradient>
-                <radialGradient id="ic4bglow" cx="0.5" cy="0.5" r="0.5">
-                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.4"/>
+                <radialGradient id="ig4" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.35"/>
                   <stop offset="100%" stop-color="#F671A6" stop-opacity="0"/>
                 </radialGradient>
               </defs>
-              <circle cx="100" cy="100" r="65" fill="url(#ic4bglow)"/>
-              <!-- Car body -->
-              <path d="M35 115 L42 100 Q50 88 65 88 L135 88 Q150 88 158 100 L165 115 L165 128 L155 128 Q152 136 144 136 Q136 136 133 128 L67 128 Q64 136 56 136 Q48 136 45 128 L35 128 Z" fill="url(#ic4bgrad)" stroke="#F671A6" stroke-width="2"/>
-              <path d="M55 100 L62 90 L138 90 L145 100 L138 106 L62 106 Z" fill="#0a0418" opacity="0.5"/>
-              <circle cx="56"  cy="130" r="8" fill="#0a0418" stroke="#F671A6" stroke-width="2"/>
-              <circle cx="56"  cy="130" r="3.5" fill="#F48A56"/>
-              <circle cx="144" cy="130" r="8" fill="#0a0418" stroke="#F671A6" stroke-width="2"/>
-              <circle cx="144" cy="130" r="3.5" fill="#F48A56"/>
-              <!-- Wrench (diagonal, above car) -->
-              <g transform="rotate(-35 100 70)">
-                <rect x="88" y="44" width="14" height="50" rx="3" fill="#F48A56" stroke="#F671A6" stroke-width="1.5"/>
-                <circle cx="95" cy="44" r="10" fill="none" stroke="#F671A6" stroke-width="3"/>
-                <circle cx="95" cy="44" r="4"  fill="#0a0418"/>
-                <rect x="88" y="88" width="14" height="8" rx="2" fill="#E71875"/>
+              <circle cx="100" cy="100" r="80" fill="url(#ig4)"/>
+              <g transform="translate(52,52) scale(4)" fill="none" stroke="#F48A56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
               </g>
-              <!-- EU star circle (top-right) -->
-              <circle cx="158" cy="48" r="18" fill="none" stroke="#F671A6" stroke-width="1.5" opacity="0.7"/>
-              <text x="158" y="53" text-anchor="middle" font-size="11" fill="#F671A6" font-family="sans-serif" opacity="0.9">EU</text>
-              <!-- Sparkles -->
-              <path d="M28 72 L30 77 L35 78 L31 81 L32 86 L28 83 L24 86 L25 81 L21 78 L26 77 Z" fill="#F48A56" opacity="0.8"/>
-              <circle cx="170" cy="150" r="2" fill="#F671A6"/>
-              <circle cx="38"  cy="150" r="1.5" fill="#F48A56"/>
             </svg>
             <div class="stage-label">★ AUFBEREITUNG ★</div>
           </div>
-
-          <!-- Stage 6: ZOLL — shield with stamp -->
           <div class="stage-visual" data-stage="5">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
               <defs>
-                <linearGradient id="ic4grad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#F48A56"/>
-                  <stop offset="100%" stop-color="#E71875"/>
-                </linearGradient>
-                <radialGradient id="ic4glow" cx="0.5" cy="0.5" r="0.5">
-                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.4"/>
-                  <stop offset="100%" stop-color="#F671A6" stop-opacity="0"/>
+                <radialGradient id="ig5" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#E71875" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#E71875" stop-opacity="0"/>
                 </radialGradient>
               </defs>
-              <circle cx="100" cy="100" r="65" fill="url(#ic4glow)"/>
-              <!-- Shield outline -->
-              <path d="M100 30 L150 50 L150 100 Q150 140 100 170 Q50 140 50 100 L50 50 Z" fill="url(#ic4grad)" stroke="#F671A6" stroke-width="3" opacity="0.9"/>
-              <path d="M100 30 L150 50 L150 100 Q150 140 100 170 Q50 140 50 100 L50 50 Z" fill="none" stroke="#fff5ee" stroke-width="1" opacity="0.4"/>
-              <!-- Inner shield -->
-              <path d="M100 50 L135 65 L135 100 Q135 130 100 150 Q65 130 65 100 L65 65 Z" fill="rgba(10, 4, 24, 0.4)" stroke="#fff5ee" stroke-width="1.5"/>
-              <!-- Checkmark -->
-              <path d="M78 100 L94 116 L124 84" stroke="#F671A6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              <path d="M78 100 L94 116 L124 84" stroke="#fff5ee" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              <!-- Decorative dots -->
-              <circle cx="100" cy="55" r="2.5" fill="#fff5ee"/>
-              <!-- Sparkles around shield -->
-              <path d="M35 75 L37 80 L42 81 L38 84 L39 89 L35 86 L31 89 L32 84 L28 81 L33 80 Z" fill="#F48A56"/>
-              <circle cx="165" cy="125" r="2" fill="#F671A6"/>
-              <circle cx="40" cy="135" r="1.5" fill="#F48A56"/>
-              <path d="M165 70 L167 73 L170 74 L167 76 L168 79 L165 77 L162 79 L163 76 L160 74 L163 73 Z" fill="#F671A6"/>
+              <circle cx="100" cy="100" r="80" fill="url(#ig5)"/>
+              <g transform="translate(52,52) scale(4)" fill="none" stroke="#F671A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" stroke="#F671A6"/>
+                <path d="m9 12 2 2 4-4" stroke="#F48A56"/>
+              </g>
             </svg>
             <div class="stage-label">★ ZOLLABWICKLUNG ★</div>
           </div>
-          <!-- Stage 7: LIEFERUNG — house with location pin on key -->
           <div class="stage-visual" data-stage="6">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
               <defs>
-                <linearGradient id="ic5grad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#F48A56"/>
-                  <stop offset="100%" stop-color="#E71875"/>
-                </linearGradient>
-                <linearGradient id="ic5roof" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#F48A56"/>
-                  <stop offset="100%" stop-color="#E9382A"/>
-                </linearGradient>
-                <radialGradient id="ic5glow" cx="0.5" cy="0.5" r="0.5">
-                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.4"/>
+                <radialGradient id="ig6" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#F671A6" stop-opacity="0.35"/>
                   <stop offset="100%" stop-color="#F671A6" stop-opacity="0"/>
                 </radialGradient>
               </defs>
-              <circle cx="100" cy="105" r="65" fill="url(#ic5glow)"/>
-              <!-- Location pin (above house) -->
-              <path d="M100 25 Q82 25 82 45 Q82 60 100 75 Q118 60 118 45 Q118 25 100 25 Z" fill="url(#ic5grad)" stroke="#fff5ee" stroke-width="2"/>
-              <circle cx="100" cy="44" r="6" fill="#fff5ee"/>
-              <circle cx="100" cy="44" r="2.5" fill="#E71875"/>
-              <!-- Path to house -->
-              <line x1="100" y1="78" x2="100" y2="98" stroke="#F671A6" stroke-width="2" stroke-dasharray="3 3"/>
-              <!-- House roof -->
-              <path d="M45 115 L100 80 L155 115" stroke="url(#ic5roof)" stroke-width="3.5" stroke-linejoin="round" fill="url(#ic5roof)"/>
-              <path d="M48 113 L100 80 L152 113" stroke="#fff5ee" stroke-width="1.5" stroke-linejoin="round" fill="none" opacity="0.5"/>
-              <!-- House body -->
-              <rect x="52" y="113" width="96" height="55" fill="rgba(231, 24, 117, 0.2)" stroke="#F671A6" stroke-width="2.5"/>
-              <!-- Door -->
-              <rect x="86" y="135" width="28" height="33" fill="url(#ic5grad)" stroke="#fff5ee" stroke-width="1.5"/>
-              <circle cx="107" cy="152" r="1.5" fill="#fff5ee"/>
-              <!-- Windows -->
-              <rect x="60" y="122" width="18" height="14" fill="#F48A56" opacity="0.5" stroke="#F671A6" stroke-width="1.5"/>
-              <line x1="69" y1="122" x2="69" y2="136" stroke="#F671A6" stroke-width="1"/>
-              <line x1="60" y1="129" x2="78" y2="129" stroke="#F671A6" stroke-width="1"/>
-              <rect x="122" y="122" width="18" height="14" fill="#F48A56" opacity="0.5" stroke="#F671A6" stroke-width="1.5"/>
-              <line x1="131" y1="122" x2="131" y2="136" stroke="#F671A6" stroke-width="1"/>
-              <line x1="122" y1="129" x2="140" y2="129" stroke="#F671A6" stroke-width="1"/>
-              <!-- Chimney -->
-              <rect x="125" y="86" width="10" height="18" fill="#E71875" stroke="#fff5ee" stroke-width="1.5"/>
+              <circle cx="100" cy="100" r="80" fill="url(#ig6)"/>
+              <g transform="translate(52,52) scale(4)" fill="none" stroke="#E71875" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" stroke="#E71875"/>
+                <circle cx="12" cy="10" r="3" stroke="#F671A6"/>
+              </g>
             </svg>
             <div class="stage-label">★ LIEFERUNG ZU DIR ★</div>
           </div>
@@ -3031,12 +2718,10 @@ function updateScene(time, deltaSec) {
     camZ = lerp(23, 18, k);
   } else {
     const k = range(p, 0.85, 1.0);
-    // Pan right to follow car exiting from container back face
-    camX = lerp(0, 3.0, k);
-    camY = lerp(4.5, 3.0, k);
-    camZ = lerp(18, 10, k);
-    lookX = lerp(0, 2.5, k);
-    // lookY stays at 1.3 — no vertical shift (prevents the "falls down" bug)
+    camX = lerp(0, 1.5, k);
+    camY = lerp(4.5, 3.5, k);
+    camZ = lerp(18, 14, k);
+    lookX = lerp(0, 4.5, k);
   }
 
   camera.position.set(camX, camY, camZ);
@@ -3066,12 +2751,11 @@ function updateScene(time, deltaSec) {
     carVisible = false;
   } else {
     const k = range(p, 0.85, 1.0);
-    // Car exits from container back face (+X, world ≈ +1.5) and drives right toward camera
-    carX = lerp(1.5, 4.0, k);
+    carX = lerp(1.5, 5.5, k);  // drives out in +X from back door, no Z overlap
     carY = 0;
-    carZ = lerp(2.0, 5.0, k);
-    carRotY = lerp(0.0, 0.15, k);
-    carScale = lerp(0.7, 2.0, k);  // grows to 2x for close-up reveal
+    carZ = 2.0;                  // fixed at container Z centre — never clips container walls
+    carRotY = 0;
+    carScale = lerp(0.7, 1.35, k);
     car.position.set(carX, carY, carZ);
     car.rotation.y = carRotY;
     car.scale.setScalar(carScale);
