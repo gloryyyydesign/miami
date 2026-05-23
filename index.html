@@ -2474,11 +2474,28 @@ function applyCarMaterials(model) {
     metalness: 0.0,
     roughness: 0.45,
   });
+  const tireMat = new THREE.MeshStandardMaterial({
+    color: 0x080808,
+    metalness: 0.0,
+    roughness: 0.9,
+  });
+  const glassMat = new THREE.MeshStandardMaterial({
+    color: 0x050508,
+    metalness: 0.0,
+    roughness: 0.1,
+  });
   model.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
-      child.material = bodyMat;
+      const name = Array.isArray(child.material) ? child.material[0]?.name : child.material?.name;
+      if (name === 'Tire') {
+        child.material = tireMat;
+      } else if (name === 'Glace') {
+        child.material = glassMat;
+      } else {
+        child.material = bodyMat;
+      }
     }
   });
 }
