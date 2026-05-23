@@ -2478,8 +2478,7 @@ function applyCarMaterials(model) {
 }
 
 (function loadMainCar() {
-  const arrayBuffer = b64ToArrayBuffer(window.EMBEDDED_ASSETS.lotus_glb);
-  GLTF_LOADER.parse(arrayBuffer, '', (gltf) => {
+  GLTF_LOADER.load('./assets/free__dodge_challenger_srt.glb', (gltf) => {
     const model = gltf.scene;
     model.rotation.y = -Math.PI / 2;
 
@@ -2516,8 +2515,8 @@ function applyCarMaterials(model) {
     car.userData.model = model;
     car.userData.wheels = wheels.length > 0 ? wheels : null;
     carLoaded = true;
-  }, (err) => {
-    console.warn('Car GLB failed to parse, using procedural fallback:', err);
+  }, null, (err) => {
+    console.warn('Car GLB failed to load, using procedural fallback:', err);
     const procCar = createCar();
     car.add(procCar);
     car.userData.model = procCar;
@@ -3039,10 +3038,9 @@ aboutScene.add(aboutRim);
 const aboutCar = new THREE.Group();
 aboutScene.add(aboutCar);
 
-// Load same Lotus GLB for the About section, separate instance.
+// Load Dodge Challenger GLB for the About section, separate instance.
 (function loadAboutCar() {
-  const arrayBuffer = b64ToArrayBuffer(window.EMBEDDED_ASSETS.lotus_glb);
-  GLTF_LOADER.parse(arrayBuffer, '', (gltf) => {
+  GLTF_LOADER.load('./assets/free__dodge_challenger_srt.glb', (gltf) => {
     const model = gltf.scene;
     model.rotation.y = -Math.PI / 2;
     let box = new THREE.Box3().setFromObject(model);
@@ -3057,8 +3055,8 @@ aboutScene.add(aboutCar);
     model.position.y -= box.min.y;
     applyCarMaterials(model);
     aboutCar.add(model);
-  }, (err) => {
-    console.warn('About car GLB parse failed, using procedural:', err);
+  }, null, (err) => {
+    console.warn('About car GLB load failed, using procedural:', err);
     aboutCar.add(createCar());
   });
 })();
