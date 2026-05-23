@@ -2474,25 +2474,27 @@ function applyCarMaterials(model) {
     metalness: 0.0,
     roughness: 0.45,
   });
-  const tireMat = new THREE.MeshStandardMaterial({
+  const blackMat = new THREE.MeshStandardMaterial({
     color: 0x080808,
     metalness: 0.0,
-    roughness: 0.9,
+    roughness: 0.8,
   });
-  const glassMat = new THREE.MeshStandardMaterial({
-    color: 0x050508,
-    metalness: 0.0,
-    roughness: 0.1,
-  });
+
+  // Identify black parts by material name OR node name (dual fallback).
+  // Node names from GLB: Object_29=Glace(windows), Object_41=RIMS_BLACK, Object_42=Tire
+  const BLACK_MAT = new Set(['Tire', 'Glace', 'RIMS_BLACK']);
+  const BLACK_NODE = new Set(['Object_29', 'Object_41', 'Object_42']);
+
   model.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
-      const name = Array.isArray(child.material) ? child.material[0]?.name : child.material?.name;
-      if (name === 'Tire') {
-        child.material = tireMat;
-      } else if (name === 'Glace') {
-        child.material = glassMat;
+      const mat = child.material;
+      const matName = Array.isArray(mat) ? (mat[0]?.name ?? '') : (mat?.name ?? '');
+      const nodeName = child.name ?? '';
+      console.log('[car mesh]', nodeName, '| mat:', matName);
+      if (BLACK_MAT.has(matName) || BLACK_NODE.has(nodeName)) {
+        child.material = blackMat;
       } else {
         child.material = bodyMat;
       }
