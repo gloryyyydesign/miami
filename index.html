@@ -2469,10 +2469,16 @@ function parseFBX(b64String) {
 let carLoaded = false;
 
 function applyCarMaterials(model) {
+  const bodyMat = new THREE.MeshStandardMaterial({
+    color: 0x1a0010,
+    metalness: 0.0,
+    roughness: 0.45,
+  });
   model.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
+      child.material = bodyMat;
     }
   });
 }
@@ -2480,7 +2486,7 @@ function applyCarMaterials(model) {
 (function loadMainCar() {
   GLTF_LOADER.load('./assets/free__dodge_challenger_srt.glb', (gltf) => {
     const model = gltf.scene;
-    model.rotation.y = -Math.PI / 2;
+    model.rotation.y = Math.PI / 2;
 
     let box = new THREE.Box3().setFromObject(model);
     const size = box.getSize(new THREE.Vector3());
@@ -3042,7 +3048,7 @@ aboutScene.add(aboutCar);
 (function loadAboutCar() {
   GLTF_LOADER.load('./assets/free__dodge_challenger_srt.glb', (gltf) => {
     const model = gltf.scene;
-    model.rotation.y = -Math.PI / 2;
+    model.rotation.y = Math.PI / 2;
     let box = new THREE.Box3().setFromObject(model);
     const size = box.getSize(new THREE.Vector3());
     const longest = Math.max(size.x, size.y, size.z);
