@@ -52,16 +52,16 @@
   #miamiBg {
     background-image: url('https://raw.githubusercontent.com/gloryyyydesign/miami/main/assets/miami.jpg');
     background-size: cover;
-    background-position: center 85%;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 30%, black 55%);
-    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 30%, black 55%);
+    background-position: center 92%;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 22%, black 48%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 22%, black 48%);
   }
   #rotterdamBg {
     background-image: url('https://raw.githubusercontent.com/gloryyyydesign/miami/main/assets/rotterdam.jpg');
     background-size: cover;
-    background-position: center 85%;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 30%, black 55%);
-    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 30%, black 55%);
+    background-position: center 92%;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 22%, black 48%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 22%, black 48%);
   }
 
   /* ============== CINEMATIC INTRO ============== */
@@ -2312,10 +2312,12 @@ scene.add(ship);
 // ============================================================
 function createFlag(type) {
   const group = new THREE.Group();
-  const poleH = 7.5;
+  const poleH = 4.0;  // shorter so flag-top aligns with title text
 
-  // Metal pole
-  const poleMat = new THREE.MeshStandardMaterial({ color: 0xc8c8c8, metalness: 0.9, roughness: 0.15 });
+  // Metal pole — transparent so we can fade the whole flag
+  const poleMat = new THREE.MeshStandardMaterial({
+    color: 0xc8c8c8, metalness: 0.9, roughness: 0.15, transparent: true, opacity: 1
+  });
   const poleMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.07, poleH, 10), poleMat);
   poleMesh.position.y = poleH / 2;
   poleMesh.castShadow = true;
@@ -2383,6 +2385,8 @@ function createFlag(type) {
     side: THREE.DoubleSide,
     roughness: 0.85,
     metalness: 0.0,
+    transparent: true,
+    opacity: 1,
   });
   const flagMesh = new THREE.Mesh(flagGeom, flagMat);
   // Place so left edge of flag sits at the pole
@@ -2391,6 +2395,7 @@ function createFlag(type) {
 
   group.userData.flagMesh = flagMesh;
   group.userData.flagGeom = flagGeom;
+  group.userData.allMats  = [poleMat, flagMat];
   group.visible = false;
   return group;
 }
@@ -2685,6 +2690,9 @@ stageSub.style.opacity = 1;
 let scrollP = 0;          // Smoothed value used by the animation (lags behind)
 let targetScrollP = 0;    // Instant target value from scroll position
 let prevCarX = 0;
+// Flag opacity state (lerped each frame for 0.5s fade)
+let usaFlagOp = 0;
+let nlFlagOp  = 0;
 let carRollAngle = 0;     // Accumulated wheel rotation for rolling
 
 function updateScroll() {
@@ -2846,14 +2854,15 @@ function updateScene(time, deltaSec) {
     carVisible = false;
   } else {
     const k = range(p, 0.85, 1.0);
-    // Start behind the door closest to viewer (high-Z door, near Z≈3),
-    // then roll out in +X so the car emerges from behind the open door panel.
-    carX = lerp(0.8, 5.5, k);
+    // Car starts behind the open viewer-side door panel (lb hinge at world Z≈3.25).
+    // X=1.2 is just inside the back face; Z=3.15 is right at the hinge, occluded by the door.
+    carX = lerp(1.2, 5.5, k);
     carY = 0;
-    // Slight Z drift: starts near door hinge (Z≈2.8), settles to ground centre (Z=2.0)
-    carZ = lerp(2.8, 2.0, k);
+    carZ = lerp(3.15, 2.0, k);   // slide out from near door hinge to grid centre
     carRotY = 0;
-    carScale = lerp(0.65, 1.35, k);
+    // No growth until car clears the door frame (world X≈1.8); quadratic ease-in after.
+    const clearK = Math.max(0, (carX - 1.8) / (5.5 - 1.8));
+    carScale = lerp(0.62, 1.35, clearK * clearK);
     car.position.set(carX, carY, carZ);
     car.rotation.y = carRotY;
     car.scale.setScalar(carScale);
@@ -2990,11 +2999,18 @@ function updateScene(time, deltaSec) {
     ship.userData.blink.material.emissiveIntensity = intensity;
   }
 
-  // ---- FLAGS ----
-  // USA flag: visible during intro car sequence and until ship appears (~p 0→0.40)
-  usaFlag.visible = (p < 0.40);
-  // Netherlands flag: visible from container offloading through end (p 0.70→1.0)
-  netherlandsFlag.visible = (p >= 0.70);
+  // ---- FLAGS ---- smooth 0.5s fade (fadeSpeed = 2/s)
+  const fadeSpeed = 2.0;
+  usaFlagOp += ((p < 0.38 ? 1 : 0) - usaFlagOp) * Math.min(1, deltaSec * fadeSpeed);
+  nlFlagOp  += ((p >= 0.70 ? 1 : 0) - nlFlagOp)  * Math.min(1, deltaSec * fadeSpeed);
+
+  function setFlagOp(flag, op) {
+    const v = Math.max(0, Math.min(1, op));
+    flag.visible = v > 0.005;
+    for (const m of flag.userData.allMats) m.opacity = v;
+  }
+  setFlagOp(usaFlag, usaFlagOp);
+  setFlagOp(netherlandsFlag, nlFlagOp);
 }
 
 // ============================================================
