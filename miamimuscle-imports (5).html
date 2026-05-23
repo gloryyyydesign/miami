@@ -2854,15 +2854,15 @@ function updateScene(time, deltaSec) {
     carVisible = false;
   } else {
     const k = range(p, 0.85, 1.0);
-    // Spawn point matches the red-X mark: just past the back door, Z at container centre.
-    // Scale starts at 0 and grows to 0.62 in the first 10% of the phase so the car
-    // "materialises" at the door rather than popping in at full size.
-    carX = lerp(1.3, 6.0, k);
+    // Car starts inside the container (carX < 1.25 = container back face) and
+    // drives out through the open back doors. carZ=2 keeps the car centred in
+    // the container width so the side walls and open door panels naturally occlude
+    // it while it is still inside.
+    carX = lerp(-0.5, 6.0, k);
     carY = 0;
-    carZ = 3.1;  // right at the viewer-side door hinge (Z≈3.25), matching the red line
+    carZ = 2.0;
     carRotY = 0;
-    const appearK = Math.min(1, k / 0.10);
-    carScale = appearK * lerp(0.62, 1.35, k);
+    carScale = lerp(0.7, 1.2, k);
     car.position.set(carX, carY, carZ);
     car.rotation.y = carRotY;
     car.scale.setScalar(carScale);
@@ -2928,15 +2928,18 @@ function updateScene(time, deltaSec) {
     const k = range(p, 0.78, 0.88);
     contVisible = true;
     cX = -2;
+    cZ = 2;
     backDoorAngle = lerp(0, Math.PI / 2, k); // back doors open
   } else if (p < 0.95) {
     contVisible = true;
     cX = -2;
+    cZ = 2;
     backDoorAngle = Math.PI / 2; // back doors fully open while car exits
   } else {
     const k = range(p, 0.95, 1.0);
     contVisible = true;
     cX = lerp(-2, -16, k);
+    cZ = 2;
     backDoorAngle = lerp(Math.PI / 2, 0, k); // back doors close as container drives away
   }
 
