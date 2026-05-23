@@ -872,7 +872,37 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.25;
 
+// Build a retrowave gradient env map so metallic materials have something to reflect
+function buildRetrowaveEnvMap(rend) {
+  const pmrem = new THREE.PMREMGenerator(rend);
+  pmrem.compileEquirectangularShader();
+  const c = document.createElement('canvas');
+  c.width = 512; c.height = 256;
+  const ctx = c.getContext('2d');
+  const g = ctx.createLinearGradient(0, 0, 0, 256);
+  g.addColorStop(0,    '#1a0535');
+  g.addColorStop(0.42, '#2d0a5e');
+  g.addColorStop(0.5,  '#6e1080');
+  g.addColorStop(0.58, '#2d0a5e');
+  g.addColorStop(1,    '#0d0020');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 512, 256);
+  // Faint neon horizon streaks
+  ctx.fillStyle = 'rgba(230,30,120,0.18)';
+  ctx.fillRect(160, 122, 190, 12);
+  ctx.fillStyle = 'rgba(246,113,166,0.12)';
+  ctx.fillRect(0, 118, 100, 8);
+  ctx.fillRect(400, 120, 112, 9);
+  const tex = new THREE.CanvasTexture(c);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  const env = pmrem.fromEquirectangular(tex).texture;
+  pmrem.dispose(); tex.dispose();
+  return env;
+}
+const retrowaveEnv = buildRetrowaveEnvMap(renderer);
+
 const scene = new THREE.Scene();
+scene.environment = retrowaveEnv;
 scene.fog = new THREE.Fog(0x2d0a5e, 50, 180);
 
 const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 250);
@@ -2474,32 +2504,32 @@ function applyCarMaterials(model) {
   //   Carosserie_6 = body, Vitres_5 = windows, Circle_10 = lights,
   //   Sphere_12 = mirrors, Plane.001_14 = wheel assembly
   const defs = {
-    'Carosserie':             { color: 0xCC1055, metalness: 0.55, roughness: 0.30 }, // candy pink paint
-    'Material.001':           { color: 0x050a10, metalness: 0.15, roughness: 0.05 }, // dark tinted glass (windows)
-    'Glace':                  { color: 0x101010, metalness: 0.05, roughness: 0.0,  emissive: 0xfff4cc, emissiveIntensity: 0.6  }, // headlight lens
+    'Carosserie':             { color: 0xCC1055, metalness: 0.70, roughness: 0.15, envMapIntensity: 2.0 }, // candy metallic pink
+    'Material.001':           { color: 0x0a1520, metalness: 0.50, roughness: 0.05, envMapIntensity: 1.5 }, // dark tinted glass
+    'Glace':                  { color: 0x1a1a1a, metalness: 0.10, roughness: 0.0,  emissive: 0xfff4cc, emissiveIntensity: 0.6  }, // headlight lens
     'Light_RED':              { color: 0x200000, metalness: 0.0,  roughness: 0.3,  emissive: 0xff2200, emissiveIntensity: 2.5  }, // tail lights
-    'Chrom':                  { color: 0xc0c0c0, metalness: 0.98, roughness: 0.04 }, // chrome trim
-    'Miror':                  { color: 0x080808, metalness: 1.0,  roughness: 0.0  }, // mirror glass
-    'Metal':                  { color: 0x3a3a3a, metalness: 0.75, roughness: 0.30 }, // metal parts
-    'Black':                  { color: 0x080808, metalness: 0.0,  roughness: 0.90 }, // matte black plastic
-    'Black_metal':            { color: 0x141414, metalness: 0.45, roughness: 0.50 }, // dark brushed metal
-    'Carbon':                 { color: 0x111111, metalness: 0.20, roughness: 0.55 }, // carbon fibre
-    'Tire':                   { color: 0x0a0a0a, metalness: 0.0,  roughness: 0.95 }, // rubber tyre
-    'RIMS_BLACK':             { color: 0x1c1c1c, metalness: 0.70, roughness: 0.25 }, // dark alloy rim
-    'Material.012':           { color: 0x707070, metalness: 0.85, roughness: 0.35 }, // brake rotor (machined steel)
-    'plaquette_de_frein.001': { color: 0x1a1a1a, metalness: 0.10, roughness: 0.80 }, // brake pads
-    'visse.001':              { color: 0x606060, metalness: 0.90, roughness: 0.20 }, // lug bolts
-    'Material.009':           { color: 0x303030, metalness: 0.60, roughness: 0.40 }, // hub / caliper
-    'Material':               { color: 0x252525, metalness: 0.55, roughness: 0.45 }, // misc wheel interior
-    'Material.003':           { color: 0x0a0a0a, metalness: 0.10, roughness: 0.50 }, // headlight housing
-    'Material.002':           { color: 0xc8c8c8, metalness: 0.10, roughness: 0.60 }, // license plate panel
-    'Material.004':           { color: 0x0a0a0a, metalness: 0.15, roughness: 0.70 }, // front grille
-    'Material.015':           { color: 0xb0b0b0, metalness: 0.90, roughness: 0.10 }, // front chrome accent
-    'Material.006':           { color: 0x080808, metalness: 0.0,  roughness: 0.90 }, // black plastic trim
+    'Chrom':                  { color: 0xd0d0d0, metalness: 0.99, roughness: 0.02, envMapIntensity: 2.5 }, // chrome
+    'Miror':                  { color: 0x111111, metalness: 1.0,  roughness: 0.0,  envMapIntensity: 2.5 }, // mirror glass
+    'Metal':                  { color: 0x4a4a4a, metalness: 0.80, roughness: 0.25, envMapIntensity: 1.5 }, // metal parts
+    'Black':                  { color: 0x282828, metalness: 0.05, roughness: 0.85 }, // graphite plastic
+    'Black_metal':            { color: 0x2a2a2a, metalness: 0.55, roughness: 0.45, envMapIntensity: 1.2 }, // graphite metal
+    'Carbon':                 { color: 0x1e1e1e, metalness: 0.25, roughness: 0.50 }, // carbon fibre
+    'Tire':                   { color: 0x282828, metalness: 0.02, roughness: 0.92 }, // graphite rubber
+    'RIMS_BLACK':             { color: 0x303030, metalness: 0.75, roughness: 0.20, envMapIntensity: 1.8 }, // graphite alloy rim
+    'Material.012':           { color: 0x808080, metalness: 0.88, roughness: 0.30, envMapIntensity: 1.5 }, // brake rotor steel
+    'plaquette_de_frein.001': { color: 0x2a2a2a, metalness: 0.10, roughness: 0.80 }, // brake pads
+    'visse.001':              { color: 0x707070, metalness: 0.92, roughness: 0.15, envMapIntensity: 1.5 }, // lug bolts
+    'Material.009':           { color: 0x383838, metalness: 0.65, roughness: 0.38, envMapIntensity: 1.2 }, // hub / caliper
+    'Material':               { color: 0x303030, metalness: 0.60, roughness: 0.42 }, // misc wheel interior
+    'Material.003':           { color: 0x1e1e1e, metalness: 0.15, roughness: 0.50 }, // headlight housing
+    'Material.002':           { color: 0xc8c8c8, metalness: 0.15, roughness: 0.55 }, // license plate panel
+    'Material.004':           { color: 0x1a1a1a, metalness: 0.15, roughness: 0.65 }, // front grille
+    'Material.015':           { color: 0xb8b8b8, metalness: 0.92, roughness: 0.08, envMapIntensity: 2.0 }, // front chrome accent
+    'Material.006':           { color: 0x242424, metalness: 0.05, roughness: 0.85 }, // black plastic trim
   };
 
   // Default fallback = body colour
-  const fallback = new THREE.MeshStandardMaterial({ color: 0xCC1055, metalness: 0.55, roughness: 0.30 });
+  const fallback = new THREE.MeshStandardMaterial({ color: 0xCC1055, metalness: 0.70, roughness: 0.15, envMapIntensity: 2.0 });
   const cache = {};
 
   function mat(name) {
@@ -3058,6 +3088,7 @@ aboutRenderer.toneMapping = THREE.ACESFilmicToneMapping;
 aboutRenderer.toneMappingExposure = 1.25;
 
 const aboutScene = new THREE.Scene();
+aboutScene.environment = buildRetrowaveEnvMap(aboutRenderer);
 const aboutCam = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
 aboutCam.position.set(5.5, 2.5, 6.5);
 aboutCam.lookAt(0, 1.2, 0);
