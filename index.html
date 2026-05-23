@@ -2359,12 +2359,12 @@ function createFlag(type) {
       }
     }
   } else {
-    // Netherlands: red / white / blue horizontal thirds
-    ctx.fillStyle = '#AE1C28';
+    // Germany: black / red / gold horizontal thirds
+    ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, W, H / 3);
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = '#DD0000';
     ctx.fillRect(0, H / 3, W, H / 3);
-    ctx.fillStyle = '#21468B';
+    ctx.fillStyle = '#FFCE00';
     ctx.fillRect(0, (H / 3) * 2, W, H / 3);
   }
 
@@ -2821,10 +2821,11 @@ function updateScene(time, deltaSec) {
     camZ = lerp(23, 18, k);
   } else {
     const k = range(p, 0.85, 1.0);
-    camX = lerp(0, 1.5, k);
-    camY = lerp(4.5, 3.5, k);
-    camZ = lerp(18, 14, k);
-    lookX = lerp(0, 4.5, k);
+    // Camera starts to the RIGHT of the back door so viewer watches the car roll out
+    camX = lerp(2.5, 3.5, k);
+    camY = lerp(3.5, 3.5, k);
+    camZ = lerp(12, 14, k);
+    lookX = lerp(1.5, 5.5, k);  // tracks from door threshold to final position
   }
 
   camera.position.set(camX, camY, camZ);
@@ -2854,15 +2855,19 @@ function updateScene(time, deltaSec) {
     carVisible = false;
   } else {
     const k = range(p, 0.85, 1.0);
-    // Car starts behind the open viewer-side door panel (lb hinge at world Z≈3.25).
-    // X=1.2 is just inside the back face; Z=3.15 is right at the hinge, occluded by the door.
+    // Car starts at scale=0 (invisible) right at the back door threshold.
+    // It "appears" from the door by growing from 0→0.62 in the first 10% of the
+    // phase, creating the illusion of rolling out. The back door is an open gap
+    // (no mesh there), so the only way to hide the car at the threshold is scale=0.
     carX = lerp(1.2, 5.5, k);
     carY = 0;
-    carZ = lerp(3.15, 2.0, k);   // slide out from near door hinge to grid centre
+    carZ = lerp(3.0, 2.0, k);
     carRotY = 0;
-    // No growth until car clears the door frame (world X≈1.8); quadratic ease-in after.
-    const clearK = Math.max(0, (carX - 1.8) / (5.5 - 1.8));
-    carScale = lerp(0.62, 1.35, clearK * clearK);
+    // Phase 1 (k 0→0.10): scale 0→0.62 — rapid "materialise at door"
+    // Phase 2 (k 0.10→1.0): scale 0.62→1.35 after car clears door frame
+    const appearK = Math.min(1, k / 0.10);
+    const clearK  = Math.max(0, (carX - 1.8) / (5.5 - 1.8));
+    carScale = appearK * lerp(0.62, 1.35, clearK * clearK);
     car.position.set(carX, carY, carZ);
     car.rotation.y = carRotY;
     car.scale.setScalar(carScale);
