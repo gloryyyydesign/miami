@@ -2469,38 +2469,55 @@ function parseFBX(b64String) {
 let carLoaded = false;
 
 function applyCarMaterials(model) {
-  const bodyMat = new THREE.MeshStandardMaterial({
-    color: 0x7a0070,
-    metalness: 0.0,
-    roughness: 0.45,
-  });
-  const blackMat = new THREE.MeshStandardMaterial({
-    color: 0x080808,
-    metalness: 0.0,
-    roughness: 0.8,
-  });
+  // Per-material definitions derived from the GLB material map.
+  // Parent groups confirmed by binary inspection:
+  //   Carosserie_6 = body, Vitres_5 = windows, Circle_10 = lights,
+  //   Sphere_12 = mirrors, Plane.001_14 = wheel assembly
+  const defs = {
+    'Carosserie':             { color: 0xCC1055, metalness: 0.55, roughness: 0.30 }, // candy pink paint
+    'Material.001':           { color: 0x050a10, metalness: 0.15, roughness: 0.05 }, // dark tinted glass (windows)
+    'Glace':                  { color: 0x101010, metalness: 0.05, roughness: 0.0,  emissive: 0xfff4cc, emissiveIntensity: 0.6  }, // headlight lens
+    'Light_RED':              { color: 0x200000, metalness: 0.0,  roughness: 0.3,  emissive: 0xff2200, emissiveIntensity: 2.5  }, // tail lights
+    'Chrom':                  { color: 0xc0c0c0, metalness: 0.98, roughness: 0.04 }, // chrome trim
+    'Miror':                  { color: 0x080808, metalness: 1.0,  roughness: 0.0  }, // mirror glass
+    'Metal':                  { color: 0x3a3a3a, metalness: 0.75, roughness: 0.30 }, // metal parts
+    'Black':                  { color: 0x080808, metalness: 0.0,  roughness: 0.90 }, // matte black plastic
+    'Black_metal':            { color: 0x141414, metalness: 0.45, roughness: 0.50 }, // dark brushed metal
+    'Carbon':                 { color: 0x111111, metalness: 0.20, roughness: 0.55 }, // carbon fibre
+    'Tire':                   { color: 0x0a0a0a, metalness: 0.0,  roughness: 0.95 }, // rubber tyre
+    'RIMS_BLACK':             { color: 0x1c1c1c, metalness: 0.70, roughness: 0.25 }, // dark alloy rim
+    'Material.012':           { color: 0x707070, metalness: 0.85, roughness: 0.35 }, // brake rotor (machined steel)
+    'plaquette_de_frein.001': { color: 0x1a1a1a, metalness: 0.10, roughness: 0.80 }, // brake pads
+    'visse.001':              { color: 0x606060, metalness: 0.90, roughness: 0.20 }, // lug bolts
+    'Material.009':           { color: 0x303030, metalness: 0.60, roughness: 0.40 }, // hub / caliper
+    'Material':               { color: 0x252525, metalness: 0.55, roughness: 0.45 }, // misc wheel interior
+    'Material.003':           { color: 0x0a0a0a, metalness: 0.10, roughness: 0.50 }, // headlight housing
+    'Material.002':           { color: 0xc8c8c8, metalness: 0.10, roughness: 0.60 }, // license plate panel
+    'Material.004':           { color: 0x0a0a0a, metalness: 0.15, roughness: 0.70 }, // front grille
+    'Material.015':           { color: 0xb0b0b0, metalness: 0.90, roughness: 0.10 }, // front chrome accent
+    'Material.006':           { color: 0x080808, metalness: 0.0,  roughness: 0.90 }, // black plastic trim
+  };
 
-  // GLB hierarchy (confirmed by parsing the binary):
-  //   Plane.001_14  → all wheel parts (rim, tire, brake disc, pads, bolts)
-  //   Vitres_5      → windows (Object_16, mat Material.001)
-  //   Circle_10     → headlight area incl. Glace lens (Object_29)
-  // Match by parent group name for maximum reliability.
+  // Default fallback = body colour
+  const fallback = new THREE.MeshStandardMaterial({ color: 0xCC1055, metalness: 0.55, roughness: 0.30 });
+  const cache = {};
+
+  function mat(name) {
+    if (!cache[name]) {
+      const d = defs[name];
+      cache[name] = d ? new THREE.MeshStandardMaterial(d) : fallback;
+    }
+    return cache[name];
+  }
+
   model.traverse((child) => {
     if (!child.isMesh) return;
     child.castShadow = true;
     child.receiveShadow = true;
-    const parentName = child.parent?.name ?? '';
-    const nodeName   = child.name ?? '';
-    const matName    = Array.isArray(child.material)
+    const matName = Array.isArray(child.material)
       ? (child.material[0]?.name ?? '')
       : (child.material?.name ?? '');
-    const isBlack =
-      parentName === 'Plane.001_14' ||   // entire wheel assembly
-      parentName === 'Vitres_5'     ||   // windows
-      matName    === 'Glace'        ||   // headlight glass
-      matName    === 'Tire'         ||   // tire (fallback)
-      matName    === 'RIMS_BLACK';       // rim (fallback)
-    child.material = isBlack ? blackMat : bodyMat;
+    child.material = mat(matName);
   });
 }
 
