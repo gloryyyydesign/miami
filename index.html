@@ -2729,14 +2729,7 @@ function updateScroll() {
     miamiBg.style.opacity = 0;
   }
 
-  // Rotterdam skyline: fades in as container is offloaded (p≈0.68), stays through end
-  if (targetScrollP < 0.65) {
-    rotterdamBg.style.opacity = 0;
-  } else if (targetScrollP < 0.76) {
-    rotterdamBg.style.opacity = (targetScrollP - 0.65) / 0.11 * 0.75;
-  } else {
-    rotterdamBg.style.opacity = 0.75;
-  }
+  rotterdamBg.style.opacity = 0;
 }
 
 window.addEventListener('scroll', updateScroll, { passive: true });
