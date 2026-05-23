@@ -2470,7 +2470,7 @@ let carLoaded = false;
 
 function applyCarMaterials(model) {
   const bodyMat = new THREE.MeshStandardMaterial({
-    color: 0x1a0010,
+    color: 0x7a0070,
     metalness: 0.0,
     roughness: 0.45,
   });
@@ -2505,14 +2505,6 @@ function applyCarMaterials(model) {
     const carGlow = new THREE.PointLight(0xF671A6, 2.0, 12);
     carGlow.position.set(0, 1.0, 0);
     model.add(carGlow);
-
-    const underglow = new THREE.Mesh(
-      new THREE.PlaneGeometry(4.2, 1.8),
-      new THREE.MeshBasicMaterial({ color: 0xF671A6, transparent: true, opacity: 0.6 })
-    );
-    underglow.rotation.x = -Math.PI / 2;
-    underglow.position.y = 0.04;
-    model.add(underglow);
 
     const wheels = [];
     model.traverse((c) => { if (c.isMesh && /wheel|tire|rim/i.test(c.name)) wheels.push(c); });
