@@ -2821,11 +2821,10 @@ function updateScene(time, deltaSec) {
     camZ = lerp(23, 18, k);
   } else {
     const k = range(p, 0.85, 1.0);
-    // Camera starts to the RIGHT of the back door so viewer watches the car roll out
-    camX = lerp(2.5, 3.5, k);
-    camY = lerp(3.5, 3.5, k);
-    camZ = lerp(12, 14, k);
-    lookX = lerp(1.5, 5.5, k);  // tracks from door threshold to final position
+    camX = lerp(0, 1.5, k);
+    camY = lerp(4.5, 3.5, k);
+    camZ = lerp(18, 14, k);
+    lookX = lerp(0, 4.5, k);
   }
 
   camera.position.set(camX, camY, camZ);
@@ -2855,19 +2854,15 @@ function updateScene(time, deltaSec) {
     carVisible = false;
   } else {
     const k = range(p, 0.85, 1.0);
-    // Car starts at scale=0 (invisible) right at the back door threshold.
-    // It "appears" from the door by growing from 0→0.62 in the first 10% of the
-    // phase, creating the illusion of rolling out. The back door is an open gap
-    // (no mesh there), so the only way to hide the car at the threshold is scale=0.
-    carX = lerp(1.2, 5.5, k);
+    // Spawn point matches the red-X mark: just past the back door, Z at container centre.
+    // Scale starts at 0 and grows to 0.62 in the first 10% of the phase so the car
+    // "materialises" at the door rather than popping in at full size.
+    carX = lerp(2.5, 6.0, k);
     carY = 0;
-    carZ = lerp(3.0, 2.0, k);
+    carZ = 2.0;
     carRotY = 0;
-    // Phase 1 (k 0→0.10): scale 0→0.62 — rapid "materialise at door"
-    // Phase 2 (k 0.10→1.0): scale 0.62→1.35 after car clears door frame
     const appearK = Math.min(1, k / 0.10);
-    const clearK  = Math.max(0, (carX - 1.8) / (5.5 - 1.8));
-    carScale = appearK * lerp(0.62, 1.35, clearK * clearK);
+    carScale = appearK * lerp(0.62, 1.35, k);
     car.position.set(carX, carY, carZ);
     car.rotation.y = carRotY;
     car.scale.setScalar(carScale);
