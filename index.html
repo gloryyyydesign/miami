@@ -440,6 +440,68 @@
   .footer-col a:hover { color: var(--c1); text-shadow: 0 0 6px var(--c1); }
   .footer-bottom { max-width: 1400px; margin: 0 auto; padding-top: 30px; border-top: 1px solid var(--line); text-align: center; font-family: var(--retro); font-size: 11px; letter-spacing: 0.2em; color: var(--ink-dim); }
   .megamark { font-family: var(--script); font-weight: 700; font-size: clamp(80px, 20vw, 320px); line-height: .85; text-align: center; margin: 60px 0 40px; color: white; text-shadow: 0 0 10px var(--c4), 0 0 30px var(--c5), 0 0 60px var(--c3); transform: rotate(-2deg); opacity: .9; }
+
+  /* ============ MOBILE RESPONSIVE ============ */
+  @media (max-width: 720px) {
+    /* Nav */
+    .nav-cta { display: none; }
+
+    /* Hero sun — too large on narrow screens */
+    .intro-sun { width: 200px; height: 200px; bottom: 18vh; }
+
+    /* Intro text */
+    .intro-text { top: 5vh; }
+    .stage-marker { bottom: 6vh; gap: 8px; }
+    .stage-dot { width: 8px; height: 8px; }
+    .scroll-hint { bottom: 1.5vh; font-size: 10px; }
+
+    /* Section headings */
+    .section-head { padding: 60px 20px 30px; }
+    .section-sub { font-size: 14px; padding: 0 4px; }
+
+    /* Stats */
+    .stats { padding: 40px 16px; gap: 16px; }
+
+    /* Ticker */
+    .ticker { padding: 14px 0; }
+    .ticker-track { font-size: 18px; gap: 36px; }
+
+    /* Process */
+    .process { padding: 0 16px 60px; }
+    .step { padding: 32px 0; }
+
+    /* Services */
+    .services { padding: 0 16px 60px; gap: 14px; }
+    .services { grid-template-columns: 1fr; }
+    .service { padding: 28px 20px; }
+    .service h3 { font-size: 22px; }
+
+    /* About */
+    .about { padding: 40px 16px; gap: 24px; }
+
+    /* FAQ */
+    .faq { padding: 0 16px 60px; }
+    .faq-q { padding: 18px 20px; font-size: 16px; }
+    .faq-a > div { padding: 0 20px 20px; }
+
+    /* Quote / CTA */
+    .quote-section { padding: 80px 20px; }
+    .quote-section p { font-size: 15px; }
+    .contact-buttons a { padding: 14px 22px; font-size: 13px; }
+
+    /* Footer */
+    footer { padding: 40px 20px 30px; }
+    .footer-main { gap: 28px; }
+
+    /* Megamark */
+    .megamark { margin: 40px 0 24px; }
+  }
+
+  @media (max-width: 480px) {
+    .ticker-track { font-size: 15px; gap: 24px; }
+    .contact-buttons { flex-direction: column; align-items: center; }
+    .contact-buttons a { width: 100%; max-width: 320px; justify-content: center; }
+  }
 </style>
 </head>
 <body>
@@ -914,6 +976,7 @@ function resize() {
   const h = window.innerHeight;
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
+  camera.fov = w < 720 ? 52 : 35;
   camera.updateProjectionMatrix();
 }
 window.addEventListener('resize', resize);
@@ -2432,10 +2495,16 @@ function createFlag(type) {
 
 const usaFlag         = createFlag('usa');
 const netherlandsFlag = createFlag('netherlands');
-usaFlag.position.set(-4.5, 0, -2.5);
-netherlandsFlag.position.set(6.5, 0, -1.5);
 scene.add(usaFlag);
 scene.add(netherlandsFlag);
+
+function repositionFlags() {
+  const mob = window.innerWidth < 720;
+  usaFlag.position.set(mob ? -1.8 : -4.5, 0, mob ? -1.5 : -2.5);
+  netherlandsFlag.position.set(mob ? 2.8 : 6.5, 0, mob ? -1.0 : -1.5);
+}
+repositionFlags();
+window.addEventListener('resize', repositionFlags);
 
 container.visible = false;
 ship.visible = false;
