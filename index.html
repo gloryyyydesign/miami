@@ -29,7 +29,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; scrollbar-gutter: stable; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
   body {
     background: var(--night-1);
     color: var(--ink);
@@ -468,6 +468,15 @@
 
     /* Hero city background — hide photo on mobile */
     #miamiBg { display: none; }
+
+    /* Prevent any oversized child from creating horizontal overflow */
+    .process, .services, .about, .faq, .stats, .quote-section, footer {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+    .step-title, .section-title, .section-title-display, .about-text h2 {
+      word-break: break-word;
+    }
 
     /* Process */
     .process { padding: 0 16px 60px; }
